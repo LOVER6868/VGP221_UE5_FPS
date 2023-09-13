@@ -2,6 +2,7 @@
 
 
 #include "FPSCharacter.h"
+#include "EnemyAICharacter.h"
 
 // Sets default values
 AFPSCharacter::AFPSCharacter()
@@ -41,6 +42,9 @@ void AFPSCharacter::BeginPlay()
 	UE_LOG(LogTemp, Warning, TEXT("Spawning FPSCharacter"));
 
 	Health = MaxHealth;
+	Ammo = MaxAmmo;
+
+	GameMode->Player = this;
 }
 
 // Called every frame
@@ -96,11 +100,12 @@ void AFPSCharacter::EndJump()
 
 void AFPSCharacter::Fire()
 {
-	AVGP221Summer2023GameModeBase* GameMode = Cast<AVGP221Summer2023GameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (Ammo < 1) return;
+
 	if (GameMode)
 	{
-		Health -= 10;
-		GameMode->CurrentWidget->SetHealthBar(Health / MaxHealth);
+		Ammo -= 1;
+		GameMode->CurrentWidget->SetAmmo(Ammo, MaxAmmo);
 	}
 
 	if (!ProjectileClass) return;
@@ -130,5 +135,28 @@ void AFPSCharacter::Fire()
 			FVector LaunchDirection = MuzzleRotation.Vector();
 			Projectile->FireInDirection(LaunchDirection);
 		}
+	}
+}
+
+void AFPSCharacter::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
+{
+	AEnemyAICharacter* Enemy = Cast<AEnemyAICharacter>(OtherActor);
+	if (Enemy != NULL)
+	{
+		TakeDamage(1);
+	}
+}
+
+void AFPSCharacter::TakeDamage(float damage)
+{
+	if (GameMode)
+	{
+		Health -= damage;
+		GameMode->CurrentWidget->SetHealthBar(Health/MaxHealth);
+	}
+
+	if (Health <= 0)
+	{
+		GameMode->LoseGame();
 	}
 }

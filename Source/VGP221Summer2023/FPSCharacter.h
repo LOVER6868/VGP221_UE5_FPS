@@ -28,6 +28,11 @@ public:
 	float Health = 100;
 	const float MaxHealth = 100;
 
+	int Ammo = 10;
+	const int MaxAmmo = 10;
+
+	AVGP221Summer2023GameModeBase* GameMode = Cast<AVGP221Summer2023GameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -60,4 +65,10 @@ public:
 
 	UFUNCTION()
 	void Fire();
+
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+
+	UFUNCTION()
+	void TakeDamage(float damage);
 };

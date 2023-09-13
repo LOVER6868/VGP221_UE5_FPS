@@ -19,6 +19,14 @@ public:
 	UPROPERTY()
 		UFPSUserWidget* CurrentWidget;
 
+		ACharacter* Player;
+
+	UFUNCTION()
+		void WinGame();
+
+	UFUNCTION()
+		void LoseGame();
+
 protected:
 	virtual void StartPlay() override;
 

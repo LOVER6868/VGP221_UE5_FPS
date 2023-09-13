@@ -31,3 +31,11 @@ void AVGP221Summer2023GameModeBase::StartPlay()
 		}
 	}
 }
+
+void AVGP221Summer2023GameModeBase::WinGame()
+{
+}
+
+void AVGP221Summer2023GameModeBase::LoseGame()
+{
+}

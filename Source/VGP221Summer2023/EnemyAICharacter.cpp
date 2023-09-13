@@ -16,6 +16,7 @@ void AEnemyAICharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	Health = MaxHealth;
 }
 
 // Called every frame
@@ -30,5 +31,15 @@ void AEnemyAICharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AEnemyAICharacter::TakeDamage(float damage)
+{
+	Health -= damage;
+
+	if (Health <= 0)
+	{
+		Destroy();
+	}
 }
 

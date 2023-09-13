@@ -2,6 +2,7 @@
 
 
 #include "FPSProjectile.h"
+#include "EnemyAICharacter.h"
 
 // Sets default values
 AFPSProjectile::AFPSProjectile()
@@ -85,6 +86,14 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor
 	if (OtherActor != this && OtherComponent->IsSimulatingPhysics())
 	{
 		OtherComponent->AddImpulseAtLocation(ProjectileMovementComponent->Velocity * 100.0f, Hit.ImpactPoint);
+		Destroy();
+	}
+
+
+	AEnemyAICharacter* Enemy = Cast<AEnemyAICharacter>(OtherActor);
+	if (Enemy != NULL)
+	{
+		Enemy->TakeDamage(50);
 		Destroy();
 	}
 }

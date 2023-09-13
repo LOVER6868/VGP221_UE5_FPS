@@ -30,6 +30,12 @@ public:
 	UPROPERTY(meta = (BindWidget))
 		UTextBlock* Score;
 
+	UPROPERTY(meta = (BindWidget))
+		UTextBlock* Ammo;
+
+	UPROPERTY(meta = (BindWidget))
+		UProgressBar* EnemyBar;
+
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class UButtonWidget> ButtonWidgetRef;
 
@@ -38,6 +44,12 @@ public:
 
 	UFUNCTION()
 	void SetScore(int scoreAmount);
+
+	UFUNCTION()
+	void SetAmmo(int currentAmmo, int maxAmmo);
+
+	UFUNCTION()
+	void SetEnemyBar(float percetnage);
 
 private:
 	int UIScore;

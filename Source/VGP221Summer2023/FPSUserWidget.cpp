@@ -7,6 +7,8 @@ void UFPSUserWidget::NativeConstruct()
 {
 	SetHealthBar(1.0);
 	SetScore(0);
+	SetAmmo(10,10);
+	SetEnemyBar(1.0);
 
 	if (ButtonWidgetRef)
 	{
@@ -27,10 +29,24 @@ void UFPSUserWidget::SetHealthBar(float percetnage)
 	HealthBar->SetPercent(percetnage);
 }
 
+void UFPSUserWidget::SetEnemyBar(float percetnage)
+{
+	if (!EnemyBar) return;
+
+	EnemyBar->SetPercent(percetnage);
+}
+
 void UFPSUserWidget::SetScore(int scoreAmount)
 {
 	if (!Score) return;
 
 	UIScore += scoreAmount;
 	Score->SetText(FText::FromString("Score :" + FString::FromInt(UIScore)));
+}
+
+void UFPSUserWidget::SetAmmo(int ammo, int maxAmmo)
+{
+	if (!Ammo) return;
+
+	Ammo->SetText(FText::FromString("Ammo :" + FString::FromInt(ammo) + "/" + FString::FromInt(maxAmmo)));
 }
