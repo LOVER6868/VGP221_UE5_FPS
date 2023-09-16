@@ -2,6 +2,8 @@
 
 
 #include "EnemyAICharacter.h"
+#include "VGP221Summer2023GameModeBase.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AEnemyAICharacter::AEnemyAICharacter()
@@ -39,7 +41,17 @@ void AEnemyAICharacter::TakeDamage(float damage)
 
 	if (Health <= 0)
 	{
-		Destroy();
+		AVGP221Summer2023GameModeBase* GameMode = Cast<AVGP221Summer2023GameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+		if (GameMode)
+		{
+			GameMode->CurrentEnemies--;
+
+			GameMode->CurrentWidget->SetEnemyBar(float(GameMode->CurrentEnemies) / float(GameMode->MaxEnemies));
+
+			Destroy();
+
+			if (GameMode->CurrentEnemies <= 0) GameMode->WinGame();
+		}
 	}
 }
 

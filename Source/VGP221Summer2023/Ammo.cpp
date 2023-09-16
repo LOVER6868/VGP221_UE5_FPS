@@ -48,6 +48,8 @@ void AAmmo::DeathTimerComplete()
 		if (Player)
 		{
 			Player->Ammo+= ammoPoints;
+			if (Player->Ammo > Player->MaxAmmo) Player->Ammo = Player->MaxAmmo;
+
 			GameMode->CurrentWidget->SetAmmo(Player->Ammo, Player->MaxAmmo);
 		}
 	}

@@ -92,7 +92,7 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor
 
 	AEnemyAICharacter* Enemy = Cast<AEnemyAICharacter>(OtherActor);
 	if (Enemy != NULL)
-	{
+	{	
 		Enemy->TakeDamage(50);
 		Destroy();
 	}

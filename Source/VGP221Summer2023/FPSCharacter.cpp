@@ -28,6 +28,7 @@ AFPSCharacter::AFPSCharacter()
 	FPSMesh->CastShadow = false;
 
 	GetMesh()->SetOwnerNoSee(true);
+	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AFPSCharacter::OnHit);
 }
 
 // Called when the game starts or when spawned

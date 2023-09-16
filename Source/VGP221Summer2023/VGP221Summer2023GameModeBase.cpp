@@ -2,6 +2,8 @@
 
 
 #include "VGP221Summer2023GameModeBase.h"
+#include <Kismet/GameplayStatics.h>
+#include "EnemyAICharacter.h"
 
 void AVGP221Summer2023GameModeBase::StartPlay()
 {
@@ -30,12 +32,46 @@ void AVGP221Summer2023GameModeBase::StartPlay()
 			CurrentWidget->AddToViewport();
 		}
 	}
+
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEnemyAICharacter::StaticClass(), FoundActors);
+
+	MaxEnemies = FoundActors.Num();
+	CurrentEnemies = MaxEnemies;
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Max Enemies: " + FString::FromInt(MaxEnemies)));
+
+	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 }
 
 void AVGP221Summer2023GameModeBase::WinGame()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Won Game"));
+	UGameplayStatics::SetGamePaused(UGameplayStatics::GetGameMode(GetWorld()), true);
+
+	if (GameWonWidgetClass)
+	{
+		UFPSGameWonWidget* GameWonWidget = CreateWidget<UFPSGameWonWidget>(GetWorld(), GameWonWidgetClass);
+		if (GameWonWidget)
+		{
+			GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+			GameWonWidget->AddToViewport();
+		}
+	}
 }
 
 void AVGP221Summer2023GameModeBase::LoseGame()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Loss Game"));
+	UGameplayStatics::SetGamePaused(UGameplayStatics::GetGameMode(GetWorld()),true);
+
+	if (GameOverWidgetClass)
+	{
+		UFPSGameOverWidget* GameOverWidget = CreateWidget<UFPSGameOverWidget>(GetWorld(), GameOverWidgetClass);
+		if (GameOverWidget)
+		{
+			GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+			GameOverWidget->AddToViewport();
+		}
+	}
 }
